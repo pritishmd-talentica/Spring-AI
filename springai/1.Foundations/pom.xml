@@ -20,6 +20,7 @@
 <!--			<groupId>org.springframework.ai</groupId>-->
 <!--			<artifactId>spring-ai-starter-model-google-genai</artifactId>-->
 <!--		</dependency>-->
+		<!--Same dependency for Groq & Openrouter -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-starter-model-openai</artifactId>

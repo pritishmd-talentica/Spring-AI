@@ -33,6 +33,29 @@ public class PromptEngineeringController {
                 .content();
     }
 
+    @GetMapping("/system-prompt")
+    public String adviseWithSystemPrompt() {
+        log.info("Endpoint : /system-prompt invoked");
+        return chatClient.prompt()
+                .system("You are a helpful Java tutor")
+                .user("Explain spring boot in simple terms")
+                .call()
+                .content();
+    }
+
+    @GetMapping("/system-prompt/dynamic")
+    public String adviseWithDynamicSystemPrompt(
+            @RequestParam String persona,
+            @RequestParam String question
+    ) {
+        log.info("Endpoint : /system-prompt/dynamic invoked, Persona: {}, Question: {}", persona, question);
+        return chatClient.prompt()
+                .system("You are a helpful " + persona + " tutor")
+                .user(question)
+                .call()
+                .content();
+    }
+
     @GetMapping("/conversation-history")
     public String getConversationHistory() {
         Message systemMessage = new SystemMessage("You are a helpful Java tutor");

@@ -16,6 +16,7 @@
 	<description>Spring AI Tutorial Code From EmbarkX Spring AI Udemy Course</description>
 	<modules>
 		<module>1.Foundations</module>
+		<module>2.Prompt Engineering</module>
 	</modules>
 	<url/>
 	<licenses>

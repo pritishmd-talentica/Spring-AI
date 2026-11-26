@@ -20,9 +20,15 @@ import java.util.List;
 public class PromptEngineeringController {
 
     private final ChatClient chatClient;
+    private final ChatClient chatClientWithDefaultSystemPrompt;
 
     public PromptEngineeringController(ChatClient.Builder builder) {
+
         this.chatClient = builder.build();
+        this.chatClientWithDefaultSystemPrompt = builder.
+                defaultSystem("You are a strict technical interviewer conducting a Java backend interview " + "Ask probing follow up questions in your response")
+                .build();
+
     }
 
     @GetMapping
@@ -51,6 +57,15 @@ public class PromptEngineeringController {
         log.info("Endpoint : /system-prompt/dynamic invoked, Persona: {}, Question: {}", persona, question);
         return chatClient.prompt()
                 .system("You are a helpful " + persona + " tutor")
+                .user(question)
+                .call()
+                .content();
+    }
+
+    @GetMapping("/system-prompt/default")
+    public String adviseWithDefaultSystemPrompt(@RequestParam String question) {
+        log.info("Endpoint : /system-prompt/default invoked");
+        return chatClientWithDefaultSystemPrompt.prompt()
                 .user(question)
                 .call()
                 .content();

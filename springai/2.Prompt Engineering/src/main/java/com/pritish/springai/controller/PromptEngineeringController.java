@@ -7,12 +7,14 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -69,6 +71,23 @@ public class PromptEngineeringController {
                 .user(question)
                 .call()
                 .content();
+    }
+
+    @GetMapping("/prompt-template-variables")
+    public String adviseWithPromptTemplateVariables(@RequestParam String language, @RequestParam String task) {
+        PromptTemplate promptTemplate = new PromptTemplate("""
+                        Write a short {language} code snippet that demonstrates how to {task}. Include comments explaining each step
+                        """
+        );
+
+        Prompt prompt = promptTemplate.create(Map.of(
+                "language", language,
+                "task", task
+        ));
+
+        return "<pre>" + chatClient.prompt(prompt)
+                .call()
+                .content() + "</pre>";
     }
 
     @GetMapping("/conversation-history")

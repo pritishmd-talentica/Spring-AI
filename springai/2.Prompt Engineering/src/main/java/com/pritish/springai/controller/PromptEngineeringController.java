@@ -90,6 +90,20 @@ public class PromptEngineeringController {
                 .content() + "</pre>";
     }
 
+    @GetMapping("/inline-prompt-template")
+    public String adviseWithInlinePromptTemplate(@RequestParam String language, @RequestParam String task) {
+
+        return "<pre>" + chatClient.prompt()
+                .user(u -> u.text(
+                        """
+                        Write a short {language} code snippet that demonstrates how to {task}. Include comments explaining each step
+                        """)
+                        .param("language", language)
+                        .param("task", task))
+                .call()
+                .content() + "</pre>";
+    }
+
     @GetMapping("/conversation-history")
     public String getConversationHistory() {
         Message systemMessage = new SystemMessage("You are a helpful Java tutor");
